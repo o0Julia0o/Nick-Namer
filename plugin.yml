@@ -1,0 +1,32 @@
+name: Nick
+main: me.killjoy64.Nick.Nick
+version: 0.7
+commands:
+    nick:
+        description: Nickname urself...
+        usage: /nick <NickName>
+    old:
+        description: Get your old name back.
+        usage: /old
+    rename:
+        description: rename someone
+        usage: /rename <Player> <Name>
+    realnick:
+        description: find the name of a player
+        usage: /realnick <Player>
+permissions:
+    nickname.nick:
+        description: Permission to NickName!
+        default: op 
+    nickname.oldname:
+        description: Permission to go back to yuor Old Name!
+        default: op 
+    nickname.rename:
+        description: permission to rename others!
+        default: op
+    nickname.notify:
+        description: Permission to be notified of name changes!
+        default: op
+    nickname.realnick:
+        description: Permission to see their REAL Minecraft NickName.
+        default: op
