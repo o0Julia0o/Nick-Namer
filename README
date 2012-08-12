@@ -1,5 +1,49 @@
-NickNamer v0.7 <I Think>
+NickNamer v0.8! 
 
+link to BukkitDev: http://dev.bukkit.org/server-mods/nick-namer/
+
+Version 0.8
+
+-Completely Redid NickNamer! Neater Code! OMFGS FDKGDGKFSGKDGS
+-/realnick now should work 100% of the time! WOO
+-Uhm other stuff I forgot about but anyways it works!
+
+Version 0.7
+
+-Added realnick permission node
+-Added ability to enable/disable the custom login messages
+-Uh, I can't remember this update was a while ago but i'm posting it now :P
+
+Version 0.6
+
+-Added Command /realnick <Player>
+-Code is now up to 1.2.3 standards
+
+Version 0.5
+
+-Added the ability to use Spout, configured in the config.yml
+-Players now get a message when someone changes their name w/ nickname.notify
+-Updated Code to R4 standards
+
+Version 0.4
+
+-The config will print the users Name, and Nickname to a config file called Nick Names.yml!
+-You may now keep your nickname when the server goes down!
+
+Version 0.3
+
+-Updated nick Namer for Bukkit R1 build for 1.0.1
+-Fixed the Bug when you RE-ENTER, not Server Restart for keeping your nickname!
+
+Version 0.2
+
+-Added new command /old *returns your name back to its default one* (Name May Change!)
+-Added new command /rename <Player> <Name> to rename others (Name May Change!)
+-Fixed/Cleaned up my code ^_^
+
+Version 0.1
+
+-Initial Release of Nick Namer
 
 
 

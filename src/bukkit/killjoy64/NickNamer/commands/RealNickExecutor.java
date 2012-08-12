@@ -71,7 +71,17 @@ public class RealNickExecutor implements CommandExecutor {
 			
 		} else {
 			
-			
+			if(args.length == 0){
+				nick.getNickMsger().log(sender, "&cNo arguments. Correct Usage is /realnick <Nick>");
+			} else if(args.length == 1){
+				if(nick.getNickedPlayers().containsKey(args[0])){
+					nick.getNickMsger().sendNick(sender, args[0], nick.getNickedPlayers().get(args[0]));
+				} else {
+					nick.getNickMsger().log(sender, "&eNo Player with that NickName was not Found.");
+				}
+			} else {
+				nick.getNickMsger().log(sender, "&cToo many arguments. Correct Usage is /realnick <Nick>");
+			}
 			
 		}
 		

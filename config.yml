@@ -1,6 +1,4 @@
 # Nick Namer Config, available tags for Secrecy are +nick, +name
-AllowImpersonation: false
-AllowDoubleNames: false 
 Secrecy:
     Enabled: false
     Join: '&e+nick &ejoined the game'

@@ -117,8 +117,8 @@ public class NickNamer extends JavaPlugin {
 		Config.SECRECY_JOIN = getConfig().getString("Secrecy.Join");
 		Config.SECRECY_LEAVE = getConfig().getString("Secrecy.Leave");
 		Config.SECRECY_KICK = getConfig().getString("Secrecy.Kick");
-		Config.ALLOW_DOUBLE_NAMES = getConfig().getBoolean("AllowDoubleNames");
-		Config.ALLOW_IMPERSONATION = getConfig().getBoolean("AllowImpersonation");
+		//Config.ALLOW_DOUBLE_NAMES = getConfig().getBoolean("AllowDoubleNames");
+		//Config.ALLOW_IMPERSONATION = getConfig().getBoolean("AllowImpersonation");
 	}
 	
 	public HashMap<String, String> getNickedPlayers(){

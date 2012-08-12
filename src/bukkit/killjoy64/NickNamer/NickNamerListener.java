@@ -26,6 +26,7 @@ public class NickNamerListener implements Listener {
 		Player player = event.getPlayer();
 		
 		if(nick.getNameConfig().getNickNames().contains("Players." + player.getName())){
+			
 			player.setDisplayName(nick.getNickMsger().getColor(nick.getNameConfig().getNickNames().getString("Players." + player.getName())));
 			player.setPlayerListName(nick.getNickMsger().stripColor(player.getDisplayName()));
 			
@@ -75,7 +76,7 @@ public class NickNamerListener implements Listener {
 	@EventHandler
 	public void onNickChange(NickChangeEvent event){
 	
-		Player player = event.getPlayer();
+		//Player player = event.getPlayer();
 		Player target = event.getTarget();
 		String name = event.getNick();
 		

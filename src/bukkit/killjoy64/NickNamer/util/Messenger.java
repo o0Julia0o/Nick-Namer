@@ -1,6 +1,7 @@
 package bukkit.killjoy64.NickNamer.util;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import bukkit.killjoy64.NickNamer.NickNamer;
@@ -30,7 +31,7 @@ public class Messenger {
 		}
 	}
 	
-	public void sendNick(Player player, String nick, String realName){
+	public void sendNick(CommandSender player, String nick, String realName){
 		player.sendMessage(getColor("&c" + nick + " &ehas the real name of &c" + realName));
 	}
 	
@@ -49,13 +50,15 @@ public class Messenger {
 		player.sendMessage(getColor(msg));
 	}
 	
+	public void log(CommandSender sender, String msg){
+		sender.sendMessage(getColor(msg));
+	}
+	
 	public void displayHelp(Player p){
 		p.sendMessage(getColor("--------------&bNick Namer Help&f--------------"));
-		p.sendMessage(getColor(""));
-		p.sendMessage(getColor(""));
-		p.sendMessage(getColor(""));
-		p.sendMessage(getColor(""));
-		p.sendMessage(getColor(""));
+		p.sendMessage(getColor("&a/nick <Nick> &f- &bChange your Name!"));
+		p.sendMessage(getColor("&a/realnick <Nick> &f- &bReturn the Real Name of Nick."));
+		p.sendMessage(getColor("&a/nn <arg1> <arg2>.. &f- &bNickNamer Plugin Stuff."));
 		p.sendMessage(getColor("--------------&bNick Namer Help&f--------------"));
 	}
 	

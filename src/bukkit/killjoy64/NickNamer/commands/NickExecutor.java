@@ -47,8 +47,13 @@ public class NickExecutor implements CommandExecutor {
 							
 							String nickname = nick.getNickMsger().getColor(args[0] + "&f");
 							
-							player.setDisplayName(nickname);
-							player.setPlayerListName(nickname);
+							try {
+								player.setDisplayName(nickname);
+								player.setPlayerListName(nickname);
+							}  catch (IllegalArgumentException e){
+								nick.getNickMsger().sendError(player, NickType.TOO_MANY_CHARS, "&c");
+								return true;
+							}
 							
 							if(nick.getNameConfig().getNickNames().contains("Players." + player.getName())){
 								nick.getNameConfig().getNickNames().set("Players." + player.getName(), args[0]);
@@ -90,8 +95,13 @@ public class NickExecutor implements CommandExecutor {
 							
 							if(event.isCancelled() == false){
 							
-								target.setDisplayName(nickname);
-								target.setPlayerListName(nickname);
+								try {
+									target.setDisplayName(nickname);
+									target.setPlayerListName(nickname);
+								} catch (IllegalArgumentException e){
+									nick.getNickMsger().sendError(player, NickType.TOO_MANY_CHARS, "&c");
+									return true;
+								}
 								
 								if(nick.getNameConfig().getNickNames().contains("Players." + target.getName())){
 									nick.getNameConfig().getNickNames().set("Players." + target.getName(), args[1]);
@@ -127,9 +137,7 @@ public class NickExecutor implements CommandExecutor {
 				}
 			
 		} else {
-			
-			
-			
+			nick.getNickMsger().log(sender, "&cYou must be ingame to use this command.");
 		}
 		
 		return true;
