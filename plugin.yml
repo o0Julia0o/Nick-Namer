@@ -1,6 +1,6 @@
 name: NickNamer
 main: bukkit.killjoy64.NickNamer.NickNamer
-version: 0.8
+version: 0.8.1
 commands:
     nick:
         description: Name Commands

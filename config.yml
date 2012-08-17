@@ -1,4 +1,5 @@
 # Nick Namer Config, available tags for Secrecy are +nick, +name
+Colored Tags: false
 Secrecy:
     Enabled: false
     Join: '&e+nick &ejoined the game'

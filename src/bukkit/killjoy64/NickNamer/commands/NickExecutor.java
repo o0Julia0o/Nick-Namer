@@ -4,8 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
+import org.kitteh.tag.TagAPI;
 
 import bukkit.killjoy64.NickNamer.NickNamer;
 import bukkit.killjoy64.NickNamer.Events.NickChangeEvent;
@@ -64,12 +63,13 @@ public class NickExecutor implements CommandExecutor {
 							}
 							
 							nick.getNickMsger().nameSelf(player, nickname);
-							nick.getNickMsger().notify(player, "&c" + player.getName() + " &eis now know as &c" + nickname);
+							nick.getNickMsger().notify(player, "&c" + player.getName() + " &eis now known as &c" + nickname);
 							
-							if(Config.SPOUT_ENABLED == true){
-								SpoutPlayer splayer = SpoutManager.getPlayer(player);
+							if(Config.TAGAPI_ENABLED == true){
+								TagAPI.refreshPlayer(player);
+								/*SpoutPlayer splayer = SpoutManager.getPlayer(player);
 								
-								splayer.setTitle(args[0]);
+								splayer.setTitle(args[0]);*/
 							}
 						
 						} else {
@@ -112,12 +112,13 @@ public class NickExecutor implements CommandExecutor {
 								}
 								
 								nick.getNickMsger().nameOther(player, target, nickname);
-								nick.getNickMsger().notify(player, "&c" + target.getName() + " &eis now know as &c" + nickname);
+								nick.getNickMsger().notify(player, "&c" + target.getName() + " &eis now known as &c" + nickname);
 								
-								if(Config.SPOUT_ENABLED == true){
-									SpoutPlayer splayer = SpoutManager.getPlayer(target);
+								if(Config.TAGAPI_ENABLED == true){
+									TagAPI.refreshPlayer(target);
+									/*SpoutPlayer splayer = SpoutManager.getPlayer(target);
 									
-									splayer.setTitle(args[0]);
+									splayer.setTitle(args[0]);*/
 								}
 						
 							} else {

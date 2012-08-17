@@ -5,8 +5,7 @@ import java.util.HashMap;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
+import org.kitteh.tag.TagAPI;
 
 import bukkit.killjoy64.NickNamer.commands.NickExecutor;
 import bukkit.killjoy64.NickNamer.commands.NickNamerExecutor;
@@ -25,6 +24,7 @@ public class NickNamer extends JavaPlugin {
 	private NickExecutor nick;
 	private RealNickExecutor realnick;
 	private NickNamerListener listener;
+	private TagApiListener tagListener;
 	private NickNamerExecutor nicknamer;
 	
 	private HashMap<String, String> nickedPlayers;
@@ -53,7 +53,7 @@ public class NickNamer extends JavaPlugin {
 		saveConfig();
 		nickNames.saveNickNames();
 		
-		Config.SPOUT_ENABLED = false;
+		Config.TAGAPI_ENABLED = false;
 		
 		getServer().getPluginManager().registerEvents(listener, this);
 		
@@ -61,16 +61,19 @@ public class NickNamer extends JavaPlugin {
 		getCommand("realnick").setExecutor(realnick);
 		getCommand("nicknamer").setExecutor(nicknamer);
 		
-		for (Plugin p : getServer().getPluginManager().getPlugins()) {
+        for (Plugin p : getServer().getPluginManager().getPlugins()) {
             String name = p.getClass().getName();
             
-            if(name.equals("org.getspout.spout.Spout")){
-            	nickLogger.log("Found Spout, using spout for Player Titles.");
-            	Config.SPOUT_ENABLED = true;
+            if(name.equals("org.kitteh.tag.TagAPI")){
+            	tagListener = new TagApiListener(this);
+            	getServer().getPluginManager().registerEvents(tagListener, this);
+            	
+            	nickLogger.log("Found TagAPI, using TagAPI for Name Changes!");
+                Config.TAGAPI_ENABLED = true;
             }
             
 		}
-		
+        
 		nickLogger.log("Loading Configuration Nodes");
 		
 		loadNodes();
@@ -89,10 +92,11 @@ public class NickNamer extends JavaPlugin {
 					nickedPlayers.put(messenger.stripColor(getNameConfig().getNickNames().getString("Players." + p.getName())), p.getName());
 				}
 				
-				if(Config.SPOUT_ENABLED == true){
-					SpoutPlayer splayer = SpoutManager.getPlayer(p);
+				if(Config.TAGAPI_ENABLED == true){
+					TagAPI.refreshPlayer(p);
+					/*SpoutPlayer splayer = SpoutManager.getPlayer(p);
 					
-					splayer.setTitle(getNickMsger().stripColor(getNameConfig().getNickNames().getString("Players." + p.getName())));
+					splayer.setTitle(getNickMsger().stripColor(getNameConfig().getNickNames().getString("Players." + p.getName())));*/
 				}
 				
 				loaded++;
@@ -113,6 +117,7 @@ public class NickNamer extends JavaPlugin {
 	}
 	
 	public void loadNodes(){
+		Config.COLORED_TAGS = getConfig().getBoolean("Colored Tags");
 		Config.SECRECY_ENABLED = getConfig().getBoolean("Secrecy.Enabled");
 		Config.SECRECY_JOIN = getConfig().getString("Secrecy.Join");
 		Config.SECRECY_LEAVE = getConfig().getString("Secrecy.Leave");

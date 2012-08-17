@@ -6,8 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
+import org.kitteh.tag.TagAPI;
 
 import bukkit.killjoy64.NickNamer.Events.NickChangeEvent;
 import bukkit.killjoy64.NickNamer.config.Config;
@@ -33,10 +32,11 @@ public class NickNamerListener implements Listener {
 			nick.getNickedPlayers().remove(player.getDisplayName());
 			nick.getNickedPlayers().put(nick.getNickMsger().stripColor(player.getDisplayName()), player.getName());
 			
-			if(Config.SPOUT_ENABLED == true){
-				SpoutPlayer splayer = SpoutManager.getPlayer(player);
+			if(Config.TAGAPI_ENABLED == true){
+				TagAPI.refreshPlayer(player);
+				/*SpoutPlayer splayer = SpoutManager.getPlayer(player);
 				
-				splayer.setTitle(nick.getNickMsger().stripColor(nick.getNameConfig().getNickNames().getString("Players." + player.getName())));
+				splayer.setTitle(nick.getNickMsger().stripColor(nick.getNameConfig().getNickNames().getString("Players." + player.getName())));*/
 			}
 			
 		} else {

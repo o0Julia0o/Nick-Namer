@@ -1,6 +1,13 @@
-NickNamer v0.8! 
+NickNamer v0.8.1! 
 
 link to BukkitDev: http://dev.bukkit.org/server-mods/nick-namer/
+
+Version 0.8.1
+
+-Now Supports TagAPI by mxbater
+-No more Spout support for name titles!
+-Stupid grammar issue with /nick :P
+-New Config node to decide if you want a colored name or not!
 
 Version 0.8
 

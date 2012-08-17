@@ -4,8 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
+import org.kitteh.tag.TagAPI;
 
 import bukkit.killjoy64.NickNamer.NickNamer;
 import bukkit.killjoy64.NickNamer.config.Config;
@@ -61,10 +60,8 @@ public class NickNamerExecutor implements CommandExecutor {
 										nick.getNickedPlayers().put(nick.getNickMsger().stripColor(nick.getNameConfig().getNickNames().getString("Players." + p.getName())), p.getName());
 									}
 									
-									if(Config.SPOUT_ENABLED == true){
-										SpoutPlayer splayer = SpoutManager.getPlayer(p);
-										
-										splayer.setTitle(nick.getNickMsger().stripColor(nick.getNameConfig().getNickNames().getString("Players." + p.getName())));
+									if(Config.TAGAPI_ENABLED == true){
+										TagAPI.refreshPlayer(p);
 									}
 								}
 							}
@@ -110,10 +107,8 @@ public class NickNamerExecutor implements CommandExecutor {
 										nick.getNickedPlayers().put(nick.getNickMsger().stripColor(nick.getNameConfig().getNickNames().getString("Players." + p.getName())), p.getName());
 									}
 									
-									if(Config.SPOUT_ENABLED == true){
-										SpoutPlayer splayer = SpoutManager.getPlayer(p);
-										
-										splayer.setTitle(nick.getNickMsger().stripColor(nick.getNameConfig().getNickNames().getString("Players." + p.getName())));
+									if(Config.TAGAPI_ENABLED == true){
+										TagAPI.refreshPlayer(p);
 									}
 								}
 							}
