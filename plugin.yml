@@ -1,6 +1,6 @@
 name: NickNamer
 main: bukkit.killjoy64.NickNamer.NickNamer
-version: 0.8.1
+version: 0.9
 commands:
     nick:
         description: Name Commands
@@ -28,3 +28,9 @@ permissions:
     nickname.realnick:
         description: Permission to see their REAL Minecraft NickName.
         default: op
+    nickname.reload:
+        description: Permission to reaload NickNamer
+        default: op
+    nickname.blacklist.bypass:
+        description: Permission to bypass the blacklist
+        default: op 

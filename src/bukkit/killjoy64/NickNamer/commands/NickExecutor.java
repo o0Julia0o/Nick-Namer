@@ -48,8 +48,10 @@ public class NickExecutor implements CommandExecutor {
 							
 							try {
 								player.setDisplayName(nickname);
-								player.setPlayerListName(nickname);
-							}  catch (IllegalArgumentException e){
+								if(Config.NICKNAME_TABLIST == true){	
+									player.setPlayerListName(nickname);
+								}
+							} catch (IllegalArgumentException e){
 								nick.getNickMsger().sendError(player, NickType.TOO_MANY_CHARS, "&c");
 								return true;
 							}
@@ -67,9 +69,6 @@ public class NickExecutor implements CommandExecutor {
 							
 							if(Config.TAGAPI_ENABLED == true){
 								TagAPI.refreshPlayer(player);
-								/*SpoutPlayer splayer = SpoutManager.getPlayer(player);
-								
-								splayer.setTitle(args[0]);*/
 							}
 						
 						} else {
@@ -97,7 +96,9 @@ public class NickExecutor implements CommandExecutor {
 							
 								try {
 									target.setDisplayName(nickname);
-									target.setPlayerListName(nickname);
+									if(Config.NICKNAME_TABLIST == true){
+										target.setPlayerListName(nickname);
+									}
 								} catch (IllegalArgumentException e){
 									nick.getNickMsger().sendError(player, NickType.TOO_MANY_CHARS, "&c");
 									return true;
@@ -116,9 +117,6 @@ public class NickExecutor implements CommandExecutor {
 								
 								if(Config.TAGAPI_ENABLED == true){
 									TagAPI.refreshPlayer(target);
-									/*SpoutPlayer splayer = SpoutManager.getPlayer(target);
-									
-									splayer.setTitle(args[0]);*/
 								}
 						
 							} else {

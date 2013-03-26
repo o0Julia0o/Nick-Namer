@@ -11,6 +11,7 @@ import bukkit.killjoy64.NickNamer.commands.NickExecutor;
 import bukkit.killjoy64.NickNamer.commands.NickNamerExecutor;
 import bukkit.killjoy64.NickNamer.commands.RealNickExecutor;
 import bukkit.killjoy64.NickNamer.config.Config;
+import bukkit.killjoy64.NickNamer.config.NickNamesBlacklist;
 import bukkit.killjoy64.NickNamer.config.NickNamesConfig;
 import bukkit.killjoy64.NickNamer.logging.NickLogger;
 import bukkit.killjoy64.NickNamer.util.Messenger;
@@ -18,6 +19,7 @@ import bukkit.killjoy64.NickNamer.util.Messenger;
 public class NickNamer extends JavaPlugin {
 
 	private NickNamesConfig nickNames;
+	private NickNamesBlacklist blacklist;
 	private NickLogger nickLogger;
 	private Messenger messenger;
 	
@@ -37,6 +39,7 @@ public class NickNamer extends JavaPlugin {
 		nickedPlayers = new HashMap<String, String>();
 		
 		nickNames = new NickNamesConfig(this);
+		blacklist = new NickNamesBlacklist(this);
 		messenger = new Messenger(this);
 		nickLogger = new NickLogger();
 		
@@ -78,31 +81,13 @@ public class NickNamer extends JavaPlugin {
 		
 		loadNodes();
 		
+		if(Config.USE_BLACKLIST) {
+			blacklist.create();
+		}
+		
 		nickLogger.log("Naming Online Players...");
 		
-		for(Player p : getServer().getOnlinePlayers()){
-			if(getNameConfig().getNickNames().contains("Players." + p.getName())){
-				p.setDisplayName(getNickMsger().getColor(getNameConfig().getNickNames().getString("Players." + p.getName())));
-				p.setPlayerListName(getNickMsger().stripColor(p.getDisplayName()));
-				
-				if(nickedPlayers.containsKey(messenger.stripColor(getNameConfig().getNickNames().getString("Players." + p.getName())))){
-					nickedPlayers.remove(messenger.stripColor(getNameConfig().getNickNames().getString("Players." + p.getName())));
-					nickedPlayers.put(messenger.stripColor(getNameConfig().getNickNames().getString("Players." + p.getName())), p.getName());
-				} else {
-					nickedPlayers.put(messenger.stripColor(getNameConfig().getNickNames().getString("Players." + p.getName())), p.getName());
-				}
-				
-				if(Config.TAGAPI_ENABLED == true){
-					TagAPI.refreshPlayer(p);
-					/*SpoutPlayer splayer = SpoutManager.getPlayer(p);
-					
-					splayer.setTitle(getNickMsger().stripColor(getNameConfig().getNickNames().getString("Players." + p.getName())));*/
-				}
-				
-				loaded++;
-				
-			}
-		}
+		namePlayers();
 		
 		nickLogger.log("Successfully named " + loaded + " players.");
 	}
@@ -118,6 +103,8 @@ public class NickNamer extends JavaPlugin {
 	
 	public void loadNodes(){
 		Config.COLORED_TAGS = getConfig().getBoolean("Colored Tags");
+		Config.NICKNAME_TABLIST = getConfig().getBoolean("NickName TabList");
+		Config.USE_BLACKLIST = getConfig().getBoolean("Blacklist");
 		Config.SECRECY_ENABLED = getConfig().getBoolean("Secrecy.Enabled");
 		Config.SECRECY_JOIN = getConfig().getString("Secrecy.Join");
 		Config.SECRECY_LEAVE = getConfig().getString("Secrecy.Leave");
@@ -126,12 +113,47 @@ public class NickNamer extends JavaPlugin {
 		//Config.ALLOW_IMPERSONATION = getConfig().getBoolean("AllowImpersonation");
 	}
 	
+	public void namePlayers() {
+		for(Player p : getServer().getOnlinePlayers()){
+			if(getNameConfig().getNickNames().contains("Players." + p.getName())){
+				if(Config.USE_BLACKLIST && blacklist.blacklisted(getNameConfig().getNickNames().getString("Players." + p.getName())) && p.hasPermission("nickname.blacklist.bypass") == false) {
+					p.setDisplayName(p.getName());
+					getNameConfig().getNickNames().set("Players." + p.getName(), p.getName());
+					getNameConfig().saveNickNames();
+				} else {
+					p.setDisplayName(getNickMsger().getColor(getNameConfig().getNickNames().getString("Players." + p.getName()) + "&f"));
+					
+					if(Config.NICKNAME_TABLIST == true){
+						p.setPlayerListName(getNickMsger().stripColor(p.getDisplayName()));
+					}
+						
+					if(nickedPlayers.containsKey(messenger.stripColor(getNameConfig().getNickNames().getString("Players." + p.getName())))){
+						nickedPlayers.remove(messenger.stripColor(getNameConfig().getNickNames().getString("Players." + p.getName())));
+						nickedPlayers.put(messenger.stripColor(getNameConfig().getNickNames().getString("Players." + p.getName())), p.getName());
+					} else {
+						nickedPlayers.put(messenger.stripColor(getNameConfig().getNickNames().getString("Players." + p.getName())), p.getName());
+					}
+					
+					if(Config.TAGAPI_ENABLED == true){
+						TagAPI.refreshPlayer(p);
+					}
+					
+					loaded++;
+				}
+			}
+		}
+	}
+	
 	public HashMap<String, String> getNickedPlayers(){
 		return nickedPlayers;
 	}
 	
 	public NickNamesConfig getNameConfig(){
 		return nickNames;
+	}
+	
+	public NickNamesBlacklist getBlacklist() {
+		return blacklist;
 	}
 	
 	public NickLogger getNickLogger(){

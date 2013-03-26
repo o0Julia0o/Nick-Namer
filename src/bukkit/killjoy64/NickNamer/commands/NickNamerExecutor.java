@@ -4,10 +4,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.kitteh.tag.TagAPI;
 
 import bukkit.killjoy64.NickNamer.NickNamer;
-import bukkit.killjoy64.NickNamer.config.Config;
 import bukkit.killjoy64.NickNamer.util.NickType;
 
 public class NickNamerExecutor implements CommandExecutor {
@@ -47,26 +45,8 @@ public class NickNamerExecutor implements CommandExecutor {
 							nick.saveConfig();
 							nick.getNameConfig().reloadNickNames();
 							nick.getNameConfig().saveNickNames();
-							
-							for(Player p : player.getServer().getOnlinePlayers()){
-								if(nick.getNameConfig().getNickNames().contains("Players." + p.getName())){
-									p.setDisplayName(nick.getNickMsger().getColor(nick.getNameConfig().getNickNames().getString("Players." + p.getName())));
-									p.setPlayerListName(nick.getNickMsger().stripColor(p.getDisplayName()));
-									
-									if(nick.getNickedPlayers().containsKey(nick.getNickMsger().stripColor(nick.getNameConfig().getNickNames().getString("Players." + p.getName())))){
-										nick.getNickedPlayers().remove(nick.getNickMsger().stripColor(nick.getNameConfig().getNickNames().getString("Players." + p.getName())));
-										nick.getNickedPlayers().put(nick.getNickMsger().stripColor(nick.getNameConfig().getNickNames().getString("Players." + p.getName())), p.getName());
-									} else {
-										nick.getNickedPlayers().put(nick.getNickMsger().stripColor(nick.getNameConfig().getNickNames().getString("Players." + p.getName())), p.getName());
-									}
-									
-									if(Config.TAGAPI_ENABLED == true){
-										TagAPI.refreshPlayer(p);
-									}
-								}
-							}
-							
 							nick.loadNodes();
+							nick.namePlayers();
 							nick.getNickMsger().send(player, "&eSuccesfully Reloaded &cNick Namer &eFiles");
 						} catch(Exception e){
 							nick.getNickMsger().send(player, "&cError Reloading Files. Report to an Administrator");
@@ -94,25 +74,7 @@ public class NickNamerExecutor implements CommandExecutor {
 							nick.saveConfig();
 							nick.getNameConfig().reloadNickNames();
 							nick.getNameConfig().saveNickNames();
-							
-							for(Player p : sender.getServer().getOnlinePlayers()){
-								if(nick.getNameConfig().getNickNames().contains("Players." + p.getName())){
-									p.setDisplayName(nick.getNickMsger().getColor(nick.getNameConfig().getNickNames().getString("Players." + p.getName())));
-									p.setPlayerListName(nick.getNickMsger().stripColor(p.getDisplayName()));
-									
-									if(nick.getNickedPlayers().containsKey(nick.getNickMsger().stripColor(nick.getNameConfig().getNickNames().getString("Players." + p.getName())))){
-										nick.getNickedPlayers().remove(nick.getNickMsger().stripColor(nick.getNameConfig().getNickNames().getString("Players." + p.getName())));
-										nick.getNickedPlayers().put(nick.getNickMsger().stripColor(nick.getNameConfig().getNickNames().getString("Players." + p.getName())), p.getName());
-									} else {
-										nick.getNickedPlayers().put(nick.getNickMsger().stripColor(nick.getNameConfig().getNickNames().getString("Players." + p.getName())), p.getName());
-									}
-									
-									if(Config.TAGAPI_ENABLED == true){
-										TagAPI.refreshPlayer(p);
-									}
-								}
-							}
-							
+							nick.namePlayers();
 							nick.loadNodes();
 							nick.getNickLogger().log("Succesfully Reloaded Nick Namer Files");
 						} catch(Exception e){

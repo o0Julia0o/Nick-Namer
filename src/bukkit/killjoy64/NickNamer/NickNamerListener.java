@@ -10,6 +10,7 @@ import org.kitteh.tag.TagAPI;
 
 import bukkit.killjoy64.NickNamer.Events.NickChangeEvent;
 import bukkit.killjoy64.NickNamer.config.Config;
+import bukkit.killjoy64.NickNamer.util.NickType;
 
 public class NickNamerListener implements Listener {
 
@@ -26,17 +27,23 @@ public class NickNamerListener implements Listener {
 		
 		if(nick.getNameConfig().getNickNames().contains("Players." + player.getName())){
 			
-			player.setDisplayName(nick.getNickMsger().getColor(nick.getNameConfig().getNickNames().getString("Players." + player.getName())));
-			player.setPlayerListName(nick.getNickMsger().stripColor(player.getDisplayName()));
+			if(Config.USE_BLACKLIST && nick.getBlacklist().blacklisted(nick.getNameConfig().getNickNames().getString("Players." + player.getName()))) {
+				player.setDisplayName(player.getName());
+				nick.getNameConfig().getNickNames().set("Players." + player.getName(), player.getName());
+				nick.getNameConfig().saveNickNames();
+			} else {
+				player.setDisplayName(nick.getNickMsger().getColor(nick.getNameConfig().getNickNames().getString("Players." + player.getName()) + "&f"));
+			}
+			
+			if(Config.NICKNAME_TABLIST == true){
+				player.setPlayerListName(nick.getNickMsger().stripColor(player.getDisplayName()));
+			}
 			
 			nick.getNickedPlayers().remove(player.getDisplayName());
 			nick.getNickedPlayers().put(nick.getNickMsger().stripColor(player.getDisplayName()), player.getName());
 			
 			if(Config.TAGAPI_ENABLED == true){
 				TagAPI.refreshPlayer(player);
-				/*SpoutPlayer splayer = SpoutManager.getPlayer(player);
-				
-				splayer.setTitle(nick.getNickMsger().stripColor(nick.getNameConfig().getNickNames().getString("Players." + player.getName())));*/
 			}
 			
 		} else {
@@ -113,12 +120,26 @@ public class NickNamerListener implements Listener {
 			
 		}*/
 			
+		
+		// if name contains certain characters don't allow
+		// else nickname the player
+		
+		if(Config.USE_BLACKLIST) {
+			if(nick.getBlacklist().blacklisted(name)) {
+				if(!event.getPlayer().hasPermission("nickname.blacklist.bypass")) {
+					nick.getNickMsger().sendError(event.getPlayer(), NickType.BLACKLISTED_NAME, "&c");
+					event.setCancelled(true);
+				}
+			}
+		}
+		
 		if(nick.getNickedPlayers().containsKey(nick.getNickMsger().stripColor(name))){
 			nick.getNickedPlayers().remove(name);
 			nick.getNickedPlayers().put(nick.getNickMsger().stripColor(name), target.getName());
 		} else {
 			nick.getNickedPlayers().put(nick.getNickMsger().stripColor(name), target.getName());
 		}
+	
 	}
 	
 }

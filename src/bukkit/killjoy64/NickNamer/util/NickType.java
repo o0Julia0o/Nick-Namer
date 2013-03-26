@@ -4,6 +4,7 @@ public enum NickType {
 	
 	TOO_MANY_CHARS("Your NickName has too many Characters. Please fix!"),
 	TAKEN_NICKNAME("Your NickName has already been taken."),
+	BLACKLISTED_NAME("That NickName has been blacklisted. Please use another one!"),
 	NOT_ENOUGH_ARGUMENTS("Not enough arguments for this command."),
 	NO_ARGUMENTS("There are no arguments. /nicknamer help for more info"),
 	NO_PERMISSION("You don't have permision to do this!"),
